@@ -8,7 +8,7 @@ export default class extends React.Component {
     return (
       <div className={S.layout}>
           <Nav/>
-            <Route exact path='/' component={Home}></Route>
+          <Route exact path='/' component={Home}></Route>
       </div>
     )
   }

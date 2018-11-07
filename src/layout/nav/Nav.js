@@ -1,8 +1,9 @@
 import {Link, NavLink} from 'react-router-dom'
+import S from './style.scss'
 
 export default class extends React.Component {
     render() {
-        return (<div className="ui menu fixed secondary pointing">
+        return (<div className={`ui menu fixed secondary pointing ${S.nav}`}>
             <div className="ui container">
                 <Link to='/' className='header item'>Noods</Link>
                 <NavLink to='/' exact className='item'>首页</NavLink>

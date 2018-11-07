@@ -1,7 +1,20 @@
-export default class extends React.Component {
-  render(){
+import {Link} from  'react-router-dom'
+import S from './style.scss'
+import Author from './Author'
+export default function({authors}){
+
     return (
-      <div>22222</div>
+        <div className={S.recommend}>
+            <div className={S.title}>
+                <span>作者列表</span>
+            </div>
+            <div className="ui items">
+                {
+                    authors.map((elt,i)=>{
+                        return (<Author {...{user:elt}} key={i}/>)
+                    })
+                }
+            </div>
+        </div>
     )
-  }
 }

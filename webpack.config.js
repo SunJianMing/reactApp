@@ -11,7 +11,7 @@ var dfPath = {
   layout:path.resolve(__dirname,'src/layout'),
   view:path.resolve(__dirname,'src/view'),
   root:path.resolve(__dirname,'./'),
-  semantic:path.resolve(__dirname,'./semantic'),
+  semantic:path.resolve(__dirname,'./semantic')
 }
 
 module.exports = {
