@@ -3,9 +3,9 @@ import {Link} from 'react-router-dom'
 import Preview from './Preview'
 import cfg from 'config/config.json'
 
-export default function(props) {
-    let {previews} = props;
-    
+export default function PreviewList(props) {
+    let {previews,initMyPage} = props;
+
 
     previews = previews.map((elt,i) => {
         let {
@@ -31,7 +31,8 @@ export default function(props) {
                         user_id,
                         user_name,
                         createdAt,
-                        user_intro
+                        user_intro,
+                        initMyPage
                       }}
                        key={i}
                        >
@@ -41,4 +42,9 @@ export default function(props) {
     })
 
     return (<div>{previews}</div>)
+}
+
+PreviewList.propTypes = {
+    previews:PT.array,
+    initMyPage:PT.func
 }

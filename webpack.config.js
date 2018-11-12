@@ -89,10 +89,11 @@ module.exports = {
         axios:'axios',
         $:'jquery',
         jQuery:'jquery',
+        "PT":'prop-types'
       })
     ],
     devServer:{
-      port:9999,
+      port:8888,
       contentBase:'./src',
       publicPath:'/',
       historyApiFallback:true,

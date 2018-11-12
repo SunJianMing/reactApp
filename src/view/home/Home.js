@@ -3,7 +3,7 @@ import Recommend from 'components/home/Recommend'
 
 import cfg from 'config/config.json'
 
-export default class extends React.Component {
+export default class Home extends React.Component {
   constructor(props){
     super(props)
     this.state = {
@@ -13,7 +13,6 @@ export default class extends React.Component {
   }
   componentDidMount(){
       let getPreviews = ()=>{
-
           return axios.post(`${cfg.url}/getPreview`)
       }
       let getAuthors = ()=>{
@@ -30,11 +29,11 @@ export default class extends React.Component {
   }
   render(){
       let {previews,authors} = this.state;
-     
+        let {initMyPage,history} = this.props
     return (
       <div className='ui grid container'>
         <div className="column twelve wide">
-              <PreviewList {...{previews}}/>
+              <PreviewList {...{previews,initMyPage}}/>
         </div>
         <div className="column four wide">
             <Recommend {...{authors}}/>
@@ -42,4 +41,7 @@ export default class extends React.Component {
       </div>
     )
   }
+}
+Home.propTypes = {
+    initMyPage:PT.func
 }
