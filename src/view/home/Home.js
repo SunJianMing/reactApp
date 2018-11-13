@@ -1,49 +1,57 @@
 import PreviewList from 'layout/preview/PreviewList'
 import Recommend from 'components/home/Recommend'
 
-import cfg from 'config/config'
+import cfg from 'config/config.json'
 
-export default class extends React.Component {
+export default class Home extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      previews:[],
+      previews : [],
       authors:[]
     }
+    this.collectionClick = this.collectionClick.bind(this)
+  }
+  collectionClick(collection_id,collection_name,userInfo){
+    let {history,initMyPage} = this.props
+
+    history.push('/my_page',{userInfo})
+
+    initMyPage(userInfo.user_id,{collection_id},collection_name)
+
   }
   componentDidMount(){
-    axios.post(`${cfg.url}/getPreview`)
-        .then(({code,data})=>{
-          if(code ===0){
-            this.setState({
-              previews:data
-            })
-          }
-        })
-
-    axios.post(`${cfg.url}/getAuthor`)
-        .then((res)=>{
-
+      let getPreviews = ()=>{
+          return axios.post(`${cfg.url}/getPreview`)
+      }
+      let getAuthors = ()=>{
+          return axios.post(`${cfg.url}/getAuthor`)
+      }
+      axios.all([getPreviews(),getAuthors()])
+      .then(axios.spread(({data:previews},{data:authors})=>{
           this.setState({
-            authors:res.data.splice(0,10)
+              previews,
+              authors:authors.splice(0,5)
           })
-        })
+      }))
+
   }
   render(){
-    let {previews,authors} = this.state
+      let {previews,authors} = this.state;
+        let {initMyPage,history} = this.props
     return (
       <div className='ui grid container'>
         <div className="column twelve wide">
-              <PreviewList {...{previews}}/>
+              <PreviewList {...{previews,initMyPage,collectionClick:this.collectionClick}}/>
         </div>
         <div className="column four wide">
-            <Recommend
-              {...{
-                authors
-              }}
-            />
+            <Recommend {...{authors,collectionClick:this.collectionClick}}/>
         </div>
       </div>
     )
   }
+}
+Home.propTypes = {
+    initMyPage:PT.func,
+    callectionClick:PT.func
 }

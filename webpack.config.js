@@ -11,8 +11,7 @@ var dfPath = {
   layout:path.resolve(__dirname,'src/layout'),
   view:path.resolve(__dirname,'src/view'),
   root:path.resolve(__dirname,'./'),
-  semantic:path.resolve(__dirname,'./semantic'),
-  assets:path.resolve(__dirname,'src/assets'),
+  semantic:path.resolve(__dirname,'./semantic')
 }
 
 module.exports = {
@@ -74,8 +73,8 @@ module.exports = {
         dfPath.components,
         dfPath.layout,
         dfPath.view,
-        dfPath.root,
-        dfPath.assets
+        dfPath.root
+
       ]
     },
     plugins: [
@@ -91,10 +90,11 @@ module.exports = {
         axios:'axios',
         $:'jquery',
         jQuery:'jquery',
+        "PT":'prop-types'
       })
     ],
     devServer:{
-      port:9999,
+      port:5555,
       contentBase:'./src',
       publicPath:'/',
       historyApiFallback:true,
