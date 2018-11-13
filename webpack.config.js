@@ -12,6 +12,7 @@ var dfPath = {
   view:path.resolve(__dirname,'src/view'),
   root:path.resolve(__dirname,'./'),
   semantic:path.resolve(__dirname,'./semantic'),
+  assets:path.resolve(__dirname,'src/assets'),
 }
 
 module.exports = {
@@ -73,7 +74,8 @@ module.exports = {
         dfPath.components,
         dfPath.layout,
         dfPath.view,
-        dfPath.root
+        dfPath.root,
+        dfPath.assets
       ]
     },
     plugins: [

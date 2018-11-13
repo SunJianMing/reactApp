@@ -2,6 +2,7 @@
   "name": "hdjrapp",
   "version": "1.0.0",
   "description": "",
+  "homepage": ".",
   "main": "webpack.config.js",
   "scripts": {
     "build": "webpack --config webpack.config.js",
