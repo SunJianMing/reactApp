@@ -5,11 +5,20 @@ export default function AuthorInfo(props){
 
     return (
         <div className={S.author_info}>
-            <Link to='/my_page' className={S.avatar}>
+            <Link to='/my_page'
+             className={S.avatar}
+             onClick={
+               ev => {
+                 ev.preventDefault()
+                 ev.stopPropagation()
+                 props.initMyPage(user_id,{user_id},'所以文章')
+               }
+             }
+             >
                 <img src={avatar} alt=""/>
             </Link>
                 <div className={S.title}>
-                    <Link to='/my_page' className={S.name}>{user_name}</Link>
+                    <span  className={S.name}>{user_name}</span>
                 </div>
         </div>
     )

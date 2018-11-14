@@ -3,6 +3,17 @@ import AuthorInfo from 'components/myPage/AuthorInfo'
 import Aside from 'components/myPage/Aside'
 
 export default class MyPage extends React.Component {
+    constructor(props){
+      super(props)
+      this.collectionClick = this.collectionClick.bind(this)
+      this.changeNoteBooks = this.changeNoteBooks.bind(this)
+    }
+    collectionClick(collection_id,collection_name,userInfo){
+          this.props.changePreview({collection_id},collection_name)
+    }
+    changeNoteBooks(collection_id,collection_name){
+      this.props.changePreview({collection_id},collection_name)
+    }
     render(){
         let {previewsName,myPagePreviews,noteBooks,location,myInfo,initMyPage,updateUserIntro} = this.props
 
@@ -10,12 +21,14 @@ export default class MyPage extends React.Component {
         let isMe = false;
         if(myInfo){
           isMe = myInfo.user_id === userInfo.user_id
+          userInfo = myInfo
         }
         return (
             <div className="ui container grid">
                 <div className="twelve wide column">
                     <AuthorInfo {...{
-                        userInfo
+                        userInfo,
+                        initMyPage
                     }}/>
                     <div className="ui secondary pointing menu">
                         <span className="active item">
@@ -24,7 +37,8 @@ export default class MyPage extends React.Component {
                     </div>
                     <PreviveList {...{
                         previews:myPagePreviews,
-                        initMyPage
+                        initMyPage,
+                        collectionClick:this.collectionClick
                     }}/>
                 </div>
                 <div className="four wide column">
@@ -32,7 +46,8 @@ export default class MyPage extends React.Component {
                         noteBooks,
                         userInfo,
                         isMe,
-                        updateUserIntro
+                        updateUserIntro,
+                        changeNoteBooks:this.changeNoteBooks
                     }}/>
                 </div>
             </div>

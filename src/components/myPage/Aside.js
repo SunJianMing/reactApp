@@ -1,4 +1,5 @@
 import S from './style.scss'
+import cfg from 'config/config.json'
 
 export default class Aside extends React.Component{
   constructor(props){
@@ -37,20 +38,33 @@ export default class Aside extends React.Component{
     ev.stopPropagation()
     ev.preventDefault()
     let {editValue} = this.state;
-    this.props.updateUserIntro(ev.target.value)
-    this.setState({
-      inEdit:false
+    let {userInfo:{user_id}} = this.props
+
+    $.post(`${cfg.url}/editIntro`,{user_intro:editValue,user_id})
+    .done(({code})=>{
+      if(code === 0){
+        this.props.updateUserIntro(editValue)
+        this.setState({
+          inEdit:false
+        })
+      }
+
     })
+
   }
     render(){
-        let {noteBooks,userInfo,isMe} = this.props
+        let {noteBooks,userInfo,isMe,changeNoteBooks} = this.props
+
         let {user_id,user_intro} = userInfo
         let {inEdit,editValue} = this.state;
 
         noteBooks = noteBooks.map((elt,i)=>{
             let {id:collection_id,collection_name} = elt;
             return (
-                <div className="item" key={i}>
+                <div
+                  className="item" key={i}
+                  onClick={ev=>changeNoteBooks(collection_id,collection_name)}
+                  >
                      <i className="book icon"></i>
                      <div className="content">
                          {collection_name}
@@ -77,16 +91,15 @@ export default class Aside extends React.Component{
                           <div className="ui divider hidden"></div>
                           {
                             inEdit?(
-                              <form className='ui form'>
+                              <form className='ui form' onSubmit={
+                                this.saveEdit
+                              }>
                                 <div className="field">
                                   <textarea value={editValue} onChange={this.changeEditValue}></textarea>
                                 </div>
                                 <button
                                   className="ui button positive"
                                   type="subimt"
-                                  onClick={
-                                    this.saveEdit
-                                  }
                                   >提交</button>
                                 <button
                                   className="ui button negative"

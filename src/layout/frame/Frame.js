@@ -4,6 +4,8 @@ import Home from 'view/home/Home'
 import SignIn from 'view/user/SignIn'
 import SignUp from 'view/user/SignUp'
 import MyPage from 'view/user/Mypage'
+import Write from 'view/write/Write'
+import LoginHint from 'layout/loginHint'
 
 import cfg from 'config/config.json'
 import S from './style.scss'
@@ -30,10 +32,11 @@ export default class extends React.Component {
         this.initMyPage = this.initMyPage.bind(this)
         this.changePreviewName = this.changePreviewName.bind(this)
         this.updateUserIntro = this.updateUserIntro.bind(this)
+        this.changePreview = this.changePreview.bind(this)
 
     }
     updateUserIntro(intro){
-      console.log(intro);
+
         let {myInfo} = this.state;
         myInfo.user_intro = intro;
         this.setState({myInfo})
@@ -49,9 +52,14 @@ export default class extends React.Component {
         })
     }
     signUpAjax(reqData) {
+
         $.post(`${cfg.url}/register`, reqData).done(res => {
             let {code, data} = res
             this.setState({signUpMsg: res})
+            if(code === 0){
+
+              this.signInAjax(reqData)
+            }
         })
     }
 
@@ -82,22 +90,24 @@ export default class extends React.Component {
             }
         })
     }
-    getPreview(data){
+    getPreview(data,previewsName){
         $.post(`${cfg.url}/getPreview`,data)
         .done(({code,data})=>{
-
             this.setState({
-                myPagePreviews:data
+                myPagePreviews:data,
+                previewsName
             })
         })
-
+    }
+    changePreview(data,previewsName){
+      this.getPreview(data,previewsName)
     }
     initMyPage(user_id,previewsData,previewsName){
 
-            this.getPreview(previewsData)
+            this.getPreview(previewsData,previewsName)
             $.post(`${cfg.url}/getCollection`,{user_id})
             .done(({code,data})=>{
-                console.log();
+
                 if(code === 0){
                     this.setState({
                         noteBooks:data,
@@ -122,17 +132,17 @@ export default class extends React.Component {
             })
         })
         let {state,pathname} = this.props.location
-
         if(state){
-            let {user_id} = state;
+            let {user_id} = state.userInfo;
             if(pathname === '/my_page'){
+              console.log(user_id);
                 this.initMyPage(user_id,{user_id},'所有文章')
             }
         }
     }
     render() {
         let {signInMsg, signUpMsg, myInfo,hasLogin,myPagePreviews,noteBooks,previewsName} = this.state;
-        let {initMyPage,loginout,signInAjax,clearfixSignMsg,signUpAjax,updateUserIntro} = this;
+        let {initMyPage,loginout,signInAjax,clearfixSignMsg,signUpAjax,updateUserIntro,changePreview} = this;
         let {history} = this.props
         if(!hasLogin){
             return (<div></div>)
@@ -186,7 +196,8 @@ export default class extends React.Component {
                           previewsName,
                           myInfo,
                           initMyPage,
-                          updateUserIntro
+                          updateUserIntro,
+                          changePreview
                       }}
                       {...props}
                     />
@@ -194,6 +205,16 @@ export default class extends React.Component {
 
                 )
             }/>
+            <Route exact path='/write' render={
+              props => (
+                myInfo?(  <Write {...{
+                  myInfo
+                }}/>):(<Redirect to='/login_hint' />)
+
+              )
+
+            }/>
+            <Route exact path='/login_hint' component={LoginHint}/>
         </div>)
     }
 }
